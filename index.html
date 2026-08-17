@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DayThree：每天三件重点与习惯追踪">
+  <title>DayThree · 今日三件事</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">DAYTHREE · LOCAL FIRST</p>
+        <h1>把今天，缩成三件事。</h1>
+        <p id="today-label" class="muted"></p>
+      </div>
+      <div class="hero-actions">
+        <button id="export-button" class="ghost">导出 JSON</button>
+        <label class="ghost file-label">导入 JSON<input id="import-file" type="file" accept="application/json"></label>
+      </div>
+    </header>
+
+    <section class="card priorities-card">
+      <div class="section-title">
+        <div><span>01</span><h2>今日三件事</h2></div>
+        <p id="progress-label">0 / 3</p>
+      </div>
+      <div id="priorities" class="priorities"></div>
+      <div class="progress-track"><div id="progress-bar"></div></div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="section-title">
+          <div><span>02</span><h2>连续习惯</h2></div>
+        </div>
+        <form id="habit-form" class="inline-form">
+          <input id="habit-input" maxlength="32" placeholder="例如：阅读 20 分钟" required>
+          <button type="submit">添加</button>
+        </form>
+        <div id="habits" class="habits"></div>
+      </section>
+
+      <section class="card note-card">
+        <div class="section-title">
+          <div><span>03</span><h2>今日复盘</h2></div>
+        </div>
+        <textarea id="note" maxlength="1000" placeholder="今天什么做得好？明天要调整什么？"></textarea>
+        <p class="muted small">内容自动保存在当前浏览器。</p>
+      </section>
+    </div>
+
+    <footer>
+      <span>数据仅保存在本机</span>
+      <button id="clear-button" class="text-button">清空全部数据</button>
+    </footer>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
