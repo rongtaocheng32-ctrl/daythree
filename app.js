@@ -145,6 +145,40 @@ function showToast(message) {
   window.setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+function buildTodaySummary() {
+  const priorities = state.priorities
+    .filter(item => item.text.trim())
+    .map(item => `${item.done ? '✓' : '○'} ${item.text.trim()}`);
+  const habits = state.habits.map(habit =>
+    `${habit.completedDates.includes(today) ? '✓' : '○'} ${habit.name}`
+  );
+  return [
+    `DayThree · ${today}`,
+    '',
+    '今日重点',
+    priorities.length ? priorities.join('\n') : '（暂无）',
+    '',
+    '今日习惯',
+    habits.length ? habits.join('\n') : '（暂无）',
+    state.note.trim() ? `\n今日复盘\n${state.note.trim()}` : ''
+  ].join('\n');
+}
+
+async function copyText(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.append(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  textarea.remove();
+}
+
 document.querySelector('#today-label').textContent = new Intl.DateTimeFormat('zh-CN', {
   dateStyle: 'full'
 }).format(new Date());
@@ -164,6 +198,15 @@ document.querySelector('#habit-form').addEventListener('submit', event => {
   input.value = '';
   saveState();
   renderHabits();
+});
+
+document.querySelector('#copy-summary-button').addEventListener('click', async () => {
+  try {
+    await copyText(buildTodaySummary());
+    showToast('今日摘要已复制');
+  } catch {
+    showToast('复制失败，请重试');
+  }
 });
 
 document.querySelector('#export-button').addEventListener('click', () => {
